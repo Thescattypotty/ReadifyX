@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jbdc:postgresql://localhost:5432/user
+    url: jdbc:postgresql://localhost:5432/user
     username: readify
     password: readify
   
