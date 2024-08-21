@@ -58,8 +58,7 @@ public class AuthenticationService implements IAuthenticationService
         {
             throw new UserAlreadyExistException("Auth Service :: username or email already in used");
         }
-        // generate new password
-        String encodedPassword = passwordEncoder.encode(registerRequest.password());
+
 
         // post entity to save the user
         try {
@@ -67,7 +66,7 @@ public class AuthenticationService implements IAuthenticationService
                 new RegisterRequest(
                     registerRequest.username(),
                     registerRequest.email(),
-                    encodedPassword
+                    registerRequest.password()
                 )
             );
         } catch (FeignException e) {

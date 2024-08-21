@@ -13,4 +13,6 @@ public interface IUserService {
     List<UserResponse> getAllUsers();
     Boolean isUserExisting(Optional<String> username , Optional<String> email);
     UserAuthResponse getUserByUsernameforAuth(String username);
+    void updateUser(String userId ,UserRequest userRequest);
+    void deleteUser(String userId);
 }

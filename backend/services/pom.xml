@@ -43,6 +43,7 @@
         <module>gateway-service</module>
         <module>user-service</module>
         <module>authentication-service</module>
+        <module>book-service</module>
     </modules>
 
     <build>

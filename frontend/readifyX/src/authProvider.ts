@@ -1,13 +1,11 @@
 import type { AuthActionResponse, AuthProvider } from "@refinedev/core";
-import { LoginRequest } from "./types/Request/LoginRequest";
 import { axiosInstance } from "@refinedev/simple-rest";
-import { JwtResponse } from "./types/Response/JwtResponse";
-import API_ENDPOINTS from "./config/apiConfig";
+import API_ENDPOINTS from "./config/endPoints";
 import axios, { HttpStatusCode } from "axios";
 
 import * as jwtDecode from 'jwt-decode';
-import { RegisterRequest } from "./types/Request/RegisterRequest";
-
+import { LoginRequest ,RegisterRequest} from "./interfaces";
+import { loginUser, registerUser } from "./config/apiMethods";
 
 export const TOKEN_KEY = "refine-auth";
 export const REFRESH_TOKEN_KEY = "refine-refresh-auth";
@@ -19,27 +17,20 @@ interface JwtPayload{
 export const authProvider: AuthProvider = {
   login: async (loginRequest: LoginRequest) => {
     try {
-      const response = await axiosInstance.post<JwtResponse>(API_ENDPOINTS.LOGIN,loginRequest);
-      
-      const jwtResponse : JwtResponse = response.data;
+      const jwtResponse = await loginUser(loginRequest); // Use the loginUser method
 
       localStorage.setItem(TOKEN_KEY, jwtResponse.accessToken);
       localStorage.setItem(REFRESH_TOKEN_KEY, jwtResponse.refreshToken);
       console.log(jwtResponse);
-      return{
+      return {
         success: true,
         redirectTo: "/",
       };
-
     } catch (error: unknown) {
-      var message: string;
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || 'Login Failed'
+        : 'An unexpected error occurred';
 
-      if(axios.isAxiosError(error))
-      {
-        message = error.response?.data?.message || 'Login Failed';
-      }else{
-        message = 'An unexpected error occurred';
-      }
       console.log(error);
       return {
         success: false,
@@ -52,37 +43,23 @@ export const authProvider: AuthProvider = {
   },
   register: async (registerRequest: RegisterRequest): Promise<AuthActionResponse> => {
     try {
-      const response = await axiosInstance.post<void>(API_ENDPOINTS.REGISTER, registerRequest);
-      if (response.status == HttpStatusCode.Created) {
-        console.log(response);
-        return {
-          success: true,
-          redirectTo: "/login",
-        };
-      } else {
-        return {
-          success: false,
-          error: {
-            name: "RegisterError",
-            message: 'Unexpected response status',
-          },
-        };
-      }
-    } catch (error: unknown) {
-      var message: string;
-
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data?.message || 'Register failed';
-      } else {
-        message = 'An unexpected error occurred';
-      }
+      await registerUser(registerRequest);
       return {
-          success: false,
-          error: {
-            name: "RegisterError",
-            message: message,
-          },
-        };
+        success: true,
+        redirectTo: "/login",
+      };
+    } catch (error: unknown) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || 'Register failed'
+        : 'An unexpected error occurred';
+
+      return {
+        success: false,
+        error: {
+          name: "RegisterError",
+          message: message,
+        },
+      };
     }
   },
 

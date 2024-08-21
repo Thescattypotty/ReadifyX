@@ -30,6 +30,11 @@ public class GatewayConfiguration {
                 .filters(f -> f.filter(filter))
                 .uri("lb://authentication-service")
             )
+            .route(
+                "book-service", r -> r.path("/api/v1/book/**")
+                .filters(f -> f.filter(filter))
+                .uri("lb://book-service")
+            )
             .build();
     }
 }

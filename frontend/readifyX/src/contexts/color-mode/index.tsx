@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@mui/material/styles";
-import { RefineThemes, ThemedLayoutV2 } from "@refinedev/mui";
+import { RefineThemes } from "@refinedev/mui";
 import React, {
   PropsWithChildren,
   createContext,

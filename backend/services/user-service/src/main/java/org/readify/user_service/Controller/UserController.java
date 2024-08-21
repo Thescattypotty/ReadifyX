@@ -9,9 +9,11 @@ import org.readify.user_service.Payload.Response.UserResponse;
 import org.readify.user_service.Service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,5 +58,17 @@ public class UserController {
     public ResponseEntity<Boolean> isUserExist(@RequestBody(required = false) Optional<String> username,@RequestBody(required = false) Optional<String> email)
     {
         return ResponseEntity.ok(userService.isUserExisting(username, email));
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable("id") String userId , @RequestBody UserRequest userRequest)
+    {
+        userService.updateUser(userId, userRequest);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String userId)
+    {
+        userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 }

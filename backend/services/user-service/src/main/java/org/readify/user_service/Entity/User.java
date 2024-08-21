@@ -22,6 +22,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,4 +65,13 @@ public class User {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void initializeRole()
+    {
+        if(!roles.contains(ERole.ROLE_USER))
+        {
+            roles.add(ERole.ROLE_USER);
+        }
+    }
 }
