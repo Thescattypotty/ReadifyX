@@ -1,0 +1,12 @@
+server:
+  port: 8040
+
+spring:
+  data:
+    mongodb:
+      username: readify
+      password: readify
+      host: localhost
+      port: 27017
+      database: files
+      authentication-database: admin

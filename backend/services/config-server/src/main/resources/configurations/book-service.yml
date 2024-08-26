@@ -13,3 +13,7 @@ spring:
       ddl-auto: update
       database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+application:
+  config:
+    file-url: http://localhost:8040/api/v1/file

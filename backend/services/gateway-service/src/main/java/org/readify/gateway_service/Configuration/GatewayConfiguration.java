@@ -35,6 +35,16 @@ public class GatewayConfiguration {
                 .filters(f -> f.filter(filter))
                 .uri("lb://book-service")
             )
+            .route(
+                "book-service", r -> r.path("/api/v1/tag/**")
+                .filters(f -> f.filter(filter))
+                .uri("lb://book-service")
+            )
+            .route(
+                "file-service", r -> r.path("/api/v1/file/**")
+                .filters(f -> f.filter(filter))
+                .uri("lb://file-service")
+            )
             .build();
     }
 }

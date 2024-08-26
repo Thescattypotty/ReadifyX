@@ -44,6 +44,7 @@
         <module>user-service</module>
         <module>authentication-service</module>
         <module>book-service</module>
+        <module>file-service</module>
     </modules>
 
     <build>

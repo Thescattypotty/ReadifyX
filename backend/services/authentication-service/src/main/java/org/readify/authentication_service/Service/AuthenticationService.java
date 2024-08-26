@@ -73,5 +73,13 @@ public class AuthenticationService implements IAuthenticationService
             throw new RegistrationFailedException("Auth Service :: Registration Failed");
         }
     }
+
+    @Override
+    public DtoUserResponse getUser(String username) {
+        DtoUserResponse user = userClient.getUserByUsername(username)
+            .orElseThrow(() -> new BadCredentialsException("Auth Service :: Username incorrect"));
+        
+        return new DtoUserResponse(user.username(), null, user.roles());
+    }
     
 }
